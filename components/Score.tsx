@@ -34,6 +34,7 @@ const Score = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: 300,
     },
     textInput: {
         borderWidth: 1,
