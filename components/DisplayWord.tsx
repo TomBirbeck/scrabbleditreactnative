@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native'
 
-const DisplayWord = (letter) => {
+const DisplayWord = (letter : {letter: string}) => {
     return (
         <View style={styles.box}>
             <Text style={styles.boxText}>{letter.letter}</Text>

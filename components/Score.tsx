@@ -1,19 +1,27 @@
-import React, {useState, useCallback} from'react'
+import React, {useState, useCallback, useEffect} from'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { calculateScrabbleScore } from '../utilities/scoreCalc'
 
-const Score = () => {
+interface ScoreProps {
+setContext: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const Score = ({setContext}: ScoreProps) => {
     const [word, setWord] = useState('')
     const [score, setScore] = useState(0)
-    const [doubles, setDoubles] = useState('');
+    const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
     const [check, setCheck] = useState<any>()
 
+    useEffect(()=>{
+        setContext(word.trim().toUpperCase().split(''))
+    },[word])
+
     const handleSubmit = useCallback((word: string, doubles: string, triples: string) => {
-        const wordSplit = word.toUpperCase().split(' ')
+        const wordSplit = word.trim().toUpperCase().split('')
         setCheck(wordSplit)
-        const doublesSplit = doubles.toUpperCase().split(' ')
-        const triplesSplit = triples.toUpperCase().split(' ')
+        const doublesSplit = doubles.trim().toUpperCase().split('')
+        const triplesSplit = triples.trim().toUpperCase().split('')
         const score = calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})
         setScore(score)
     },[word, doubles, triples])
