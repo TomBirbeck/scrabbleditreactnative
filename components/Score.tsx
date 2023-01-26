@@ -1,9 +1,16 @@
 import React, {useState, useCallback, useEffect} from'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, FlatList } from 'react-native'
 import { calculateScrabbleScore } from '../utilities/scoreCalc'
 
 interface ScoreProps {
 setContext: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+type wordModes = {
+        name: string;
+        state: boolean;
+        setter: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
 const Score = ({setContext}: ScoreProps) => {
@@ -11,6 +18,21 @@ const Score = ({setContext}: ScoreProps) => {
     const [score, setScore] = useState(0)
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
+    const [doubleScore, setDoubleScore] = useState(false);
+    const [doubleDoubleScore, setDoubleDoubleScore] = useState(false);
+    const [tripleScore, setTripleScore] = useState(false);
+    const [doubleTripleScore, setDoubleTripleScore] = useState(false);
+    const [tripleTripleScore, setTripleTripleScore] = useState(false);
+    const [allTiles, setAllTiles] = useState(false);
+    const [finalScoreMode, setFinalScoreMode] = useState(false);
+
+    const WORDMODES: wordModes[]= [
+        {name: 'Double Word', state: doubleScore, setter: setDoubleScore},
+        {name: 'Double Double Word', state: doubleDoubleScore, setter: setDoubleDoubleScore},
+        {name: 'Triple Word', state: tripleScore, setter: setTripleScore},
+        {name: 'Double Triple Word', state: doubleTripleScore, setter: setDoubleTripleScore},
+        {name: 'Triple Triple Word', state: tripleTripleScore, setter: setTripleTripleScore},
+    ]
 
     useEffect(()=>{
         setContext(word.trim().toUpperCase().split(''))
@@ -23,9 +45,41 @@ const Score = ({setContext}: ScoreProps) => {
         const score = calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})
         setScore(score)
     },[word, doubles, triples])
+
+    const handleWordCheck = useCallback((word: string, doubles: string, triples: string) => {
+        const wordSplit = word.trim().toUpperCase().split('')
+        const doublesSplit = doubles.trim().toUpperCase().split('')
+        const triplesSplit = triples.trim().toUpperCase().split('')
+    let mode = 1;
+    let mode2 = 1;
+    let mode3 = 1;
+    let mode4 = 1;
+    let mode5 = 1;
+    let extra = 0;
+    allTiles ? extra = 50: extra = 0;
+    doubleScore ? (mode = 2) :  (mode = 1);
+    doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
+    tripleScore ? (mode3 = 3) : (mode3 = 1);
+    doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
+    tripleTripleScore ? (mode5 = 3) : (mode5 = 1);
+   const score = ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra)
+    setScore(score)
+  },[word, doubles, triples])
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={()=>handleSubmit(word, doubles, triples)}>
+            <FlatList
+            style={styles.wordModesList}
+            data={WORDMODES}
+            keyExtractor={item=>item.name}
+            renderItem={({item})=> (
+                <View style={styles.wordModes}>
+                    <Text style={styles.score}>{item.name}</Text>
+                    <Switch value={!!item.state} onValueChange={()=>{item.setter(!item.state)}}></Switch>
+                </View>
+            )}
+            />
+            <TouchableOpacity style={styles.button} onPress={()=>handleWordCheck(word, doubles, triples)}>
             <Text style={styles.score}>Check Word</Text>
             </TouchableOpacity>
             <Text style={styles.score}>Score: {score}</Text>
@@ -38,7 +92,6 @@ const Score = ({setContext}: ScoreProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 3,
         width: 300,
     },
     textInput: {
@@ -59,6 +112,14 @@ const styles = StyleSheet.create({
     },
     score: {
         color: 'white'
+    },
+    wordModesList: {
+    height: 250,
+    },
+    wordModes: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     }
 })
 
