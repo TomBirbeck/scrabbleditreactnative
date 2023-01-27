@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import Display from './components/Display';
 import Header from './components/Header';
 import Score from './components/Score';
+import Scoreboard from './components/Scoreboard';
 import WordContext from './utilities/wordContext';
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
     <Header/>
     <Display/>
     <Score setContext={setContext}/>
+    <Scoreboard/>
     </SafeAreaView>
     </WordContext.Provider>
   );
