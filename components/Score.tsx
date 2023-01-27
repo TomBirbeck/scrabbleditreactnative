@@ -23,11 +23,11 @@ const Score = ({setContext}: ScoreProps) => {
     const [doubleTripleScore, setDoubleTripleScore] = useState(false);
     const [tripleTripleScore, setTripleTripleScore] = useState(false);
     const [allTiles, setAllTiles] = useState(false);
-    const [finalScoreMode, setFinalScoreMode] = useState(false);
+    const [finalScoreMode, setFinalScoreMode] = useState(true);
     const [openWordModes, setOpenWordModes] = useState(false)
     const [score, setScore] = useState(0)
     const [passScore, setPassScore] = useState(0)
-    const [finalTiles, setFinalTiles] = useState([]);
+    const [finalTiles, setFinalTiles] = useState<number[]>([]);
 
 
     const WORDMODES: wordModes[]= [
@@ -92,11 +92,11 @@ const Score = ({setContext}: ScoreProps) => {
     setPassScore(
         (calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra);
     }
-    // if (finalScoreMode === true) {
-    //   let scores = finalTiles;
-    //   scores = scores + ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})))
-    //   setFinalTiles(scores)
-    // }
+    if (finalScoreMode === true) {
+    let scores = finalTiles
+        scores.push((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})))
+      setFinalTiles(scores)
+    }
       setWord('');
     setDoubles('');
     setTriples('');
@@ -108,6 +108,8 @@ const Score = ({setContext}: ScoreProps) => {
     setTripleTripleScore(false);
     setAllTiles(false);
   }, [score, passScore])
+
+  console.log(finalTiles)
 
     return (
         <View style={styles.container}>
@@ -133,8 +135,8 @@ const Score = ({setContext}: ScoreProps) => {
             </TouchableOpacity>
             <Text style={styles.score}>Score: {score}</Text>
             <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
-            <TextInput style={styles.textInput}  value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
-            <TextInput style={styles.textInput}  value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
+            <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
+            <TextInput style={styles.textInput} value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
         </View>
     )
 }
