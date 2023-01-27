@@ -27,6 +27,10 @@ const [finalTiles, setFinalTiles] = useState([]);
             player2={player2}
             player3={player3}
             player4={player4}
+            setPlayer1={setPlayer1}
+            setPlayer2={setPlayer2}
+            setPlayer3={setPlayer3}
+            setPlayer4={setPlayer4}
             finals={finalTiles}
             />
         </View>
