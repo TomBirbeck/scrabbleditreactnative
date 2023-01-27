@@ -1,4 +1,4 @@
-import {useState, useCallback, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 
 type PLAYER = 
@@ -12,18 +12,10 @@ interface ScoreboardProps {
     player2: PLAYER;
     player3: PLAYER;
     player4: PLAYER;
-    finals?: number[]
+    finals: number[]
 }
 
-
-const FINALS = [
-    {tiles: 1, score: 0},
-    {tiles: 2, score: 0},
-    {tiles: 3, score: 0},
-    {tiles: 4, score: 0},
-]
-
-const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
+const Scoreboard = ({player1, player2, player3, player4, finals} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
     const [winner, setWinner] = useState('');
     const [finalA, setFinalA] = useState(0);
@@ -52,7 +44,7 @@ const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
             <View style={styles.tableBody}>
             <Text style={[styles.bodyText, styles.playerButton]}>{player.item.name}</Text>
             <Text style={styles.bodyText}>{player.item.score}</Text>
-            <Text style={styles.bodyText}>{FINALS[player.item.id - 1].tiles}</Text>
+            <Text style={styles.bodyText}>{finals[player.item.id - 1]}</Text>
             <Text style={styles.bodyText}>{finalScores[player.item.id - 1]}</Text>
             </View>
         )}
@@ -62,7 +54,6 @@ const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
     <Text style={styles.bodyText}>+1</Text>
 </TouchableOpacity>
 </View>
-
     )
 }
 

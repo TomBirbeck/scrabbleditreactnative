@@ -27,6 +27,7 @@ const [finalTiles, setFinalTiles] = useState([]);
             player2={player2}
             player3={player3}
             player4={player4}
+            finals={finalTiles}
             />
         </View>
     )
