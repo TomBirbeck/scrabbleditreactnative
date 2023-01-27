@@ -15,7 +15,6 @@ type wordModes = {
 
 const Score = ({setContext}: ScoreProps) => {
     const [word, setWord] = useState('')
-    const [score, setScore] = useState(0)
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
     const [doubleScore, setDoubleScore] = useState(false);
@@ -26,6 +25,10 @@ const Score = ({setContext}: ScoreProps) => {
     const [allTiles, setAllTiles] = useState(false);
     const [finalScoreMode, setFinalScoreMode] = useState(false);
     const [openWordModes, setOpenWordModes] = useState(false)
+    const [score, setScore] = useState(0)
+    const [passScore, setPassScore] = useState(0)
+    const [finalTiles, setFinalTiles] = useState([]);
+
 
     const WORDMODES: wordModes[]= [
         {name: 'Double Word', state: doubleScore, setter: setDoubleScore},
@@ -59,7 +62,6 @@ const Score = ({setContext}: ScoreProps) => {
     let extra = 0;
     allTiles ? (extra = 50): extra = 0;
     doubleScore ? (mode = 2) : mode = 1;
-    console.log(mode)
     doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
     tripleScore ? (mode3 = 3) : (mode3 = 1);
     doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
@@ -68,9 +70,48 @@ const Score = ({setContext}: ScoreProps) => {
     setScore(score)
   },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore])
 
+  const handleWordSubmit = useCallback((word: string, doubles: string, triples: string) => {
+        const wordSplit = word.trim().toUpperCase().split('')
+        const doublesSplit = doubles.trim().toUpperCase().split('')
+        const triplesSplit = triples.trim().toUpperCase().split('')
+    if (finalScoreMode === false) {
+    let mode = 1;
+    let mode2 = 1;
+    let mode3 = 1;
+    let mode4 = 1;
+    let mode5 = 1;
+    let extra = 0;
+    allTiles ? extra = 50: extra = 0;
+    doubleScore ? (mode = 2) :  (mode = 1);
+    doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
+    tripleScore ? (mode3 = 3) : (mode3 = 1);
+    doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
+    tripleTripleScore ? (mode5 = 3) : (mode5 = 1);
+    setScore(
+      (calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra);
+    setPassScore(
+        (calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra);
+    }
+    // if (finalScoreMode === true) {
+    //   let scores = finalTiles;
+    //   scores = scores + ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})))
+    //   setFinalTiles(scores)
+    // }
+      setWord('');
+    setDoubles('');
+    setTriples('');
+    setScore(0);
+    setDoubleScore(false);
+    setDoubleDoubleScore(false)
+    setTripleScore(false);
+    setDoubleTripleScore(false);
+    setTripleTripleScore(false);
+    setAllTiles(false);
+  }, [score, passScore])
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={()=>{setOpenWordModes(!openWordModes)}}>
+            <TouchableOpacity style={styles.modeButton} onPress={()=>{setOpenWordModes(!openWordModes)}}>
             <Text style={styles.score}>Word mode selection</Text>
             </TouchableOpacity>
             {openWordModes && <FlatList
@@ -84,8 +125,11 @@ const Score = ({setContext}: ScoreProps) => {
                 </View>
             )}
             />}
-            <TouchableOpacity style={styles.button} onPress={()=>handleWordCheck(word, doubles, triples)}>
+            <TouchableOpacity style={styles.checkButton} onPress={()=>handleWordCheck(word, doubles, triples)}>
             <Text style={styles.score}>Check Word</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.submitButton} onPress={()=>handleWordSubmit(word, doubles, triples)}>
+            <Text style={styles.score}>Submit Word</Text>
             </TouchableOpacity>
             <Text style={styles.score}>Score: {score}</Text>
             <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
@@ -107,10 +151,26 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
     },
-    button: {
+    checkButton: {
         backgroundColor: '#3A9366',
-        padding: 3,
+        padding: 5,
         width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    submitButton: {
+        backgroundColor: '#3A9366',
+        padding: 5,
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    modeButton: {
+        backgroundColor: '#29809E',
+        padding: 5,
+        width: 150,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
