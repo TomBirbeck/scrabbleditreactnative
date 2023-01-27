@@ -13,7 +13,7 @@ type wordModes = {
 
 }
 
-const Score = ({setContext}: ScoreProps) => {
+const WordScore = ({setContext}: ScoreProps) => {
     const [word, setWord] = useState('')
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Score
+export default WordScore
