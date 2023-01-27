@@ -23,7 +23,7 @@ const Score = ({setContext}: ScoreProps) => {
     const [doubleTripleScore, setDoubleTripleScore] = useState(false);
     const [tripleTripleScore, setTripleTripleScore] = useState(false);
     const [allTiles, setAllTiles] = useState(false);
-    const [finalScoreMode, setFinalScoreMode] = useState(true);
+    const [finalScoreMode, setFinalScoreMode] = useState(false);
     const [openWordModes, setOpenWordModes] = useState(false)
     const [score, setScore] = useState(0)
     const [passScore, setPassScore] = useState(0)
@@ -41,14 +41,6 @@ const Score = ({setContext}: ScoreProps) => {
     useEffect(()=>{
         setContext(word.trim().toUpperCase().split(''))
     },[word])
-
-    const handleSubmit = useCallback((word: string, doubles: string, triples: string) => {
-        const wordSplit = word.trim().toUpperCase().split('')
-        const doublesSplit = doubles.trim().toUpperCase().split('')
-        const triplesSplit = triples.trim().toUpperCase().split('')
-        const score = calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})
-        setScore(score)
-    },[word, doubles, triples])
 
     const handleWordCheck = useCallback((word: string, doubles: string, triples: string) => {
         const wordSplit = word.trim().toUpperCase().split('')
@@ -109,12 +101,13 @@ const Score = ({setContext}: ScoreProps) => {
     setAllTiles(false);
   }, [score, passScore])
 
-  console.log(finalTiles)
-
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.modeButton} onPress={()=>{setOpenWordModes(!openWordModes)}}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#29809E'}]} onPress={()=>{setOpenWordModes(!openWordModes)}}>
             <Text style={styles.score}>Word mode selection</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, {backgroundColor: 'gold'}]} onPress={()=>{setFinalScoreMode(!finalScoreMode)}}>
+            <Text style={styles.score}>Final Score Mode</Text>
             </TouchableOpacity>
             {openWordModes && <FlatList
             style={styles.wordModesList}
@@ -127,12 +120,14 @@ const Score = ({setContext}: ScoreProps) => {
                 </View>
             )}
             />}
-            <TouchableOpacity style={styles.checkButton} onPress={()=>handleWordCheck(word, doubles, triples)}>
+            <View style={styles.wordModes}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordCheck(word, doubles, triples)}>
             <Text style={styles.score}>Check Word</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.submitButton} onPress={()=>handleWordSubmit(word, doubles, triples)}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordSubmit(word, doubles, triples)}>
             <Text style={styles.score}>Submit Word</Text>
             </TouchableOpacity>
+            </View>
             <Text style={styles.score}>Score: {score}</Text>
             <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
             <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
@@ -153,29 +148,18 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
     },
-    checkButton: {
-        backgroundColor: '#3A9366',
-        padding: 5,
-        width: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
+    wordButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
-    submitButton: {
-        backgroundColor: '#3A9366',
+    button: {
         padding: 5,
-        width: 100,
+        minWidth: 120,
+        maxWidth: 150,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
-    },
-    modeButton: {
-        backgroundColor: '#29809E',
-        padding: 5,
-        width: 150,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
+        margin: 2,
     },
     score: {
         color: 'white'
