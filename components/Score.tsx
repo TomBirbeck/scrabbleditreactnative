@@ -25,6 +25,7 @@ const Score = ({setContext}: ScoreProps) => {
     const [tripleTripleScore, setTripleTripleScore] = useState(false);
     const [allTiles, setAllTiles] = useState(false);
     const [finalScoreMode, setFinalScoreMode] = useState(false);
+    const [openWordModes, setOpenWordModes] = useState(false)
 
     const WORDMODES: wordModes[]= [
         {name: 'Double Word', state: doubleScore, setter: setDoubleScore},
@@ -56,19 +57,23 @@ const Score = ({setContext}: ScoreProps) => {
     let mode4 = 1;
     let mode5 = 1;
     let extra = 0;
-    allTiles ? extra = 50: extra = 0;
-    doubleScore ? (mode = 2) :  (mode = 1);
+    allTiles ? (extra = 50): extra = 0;
+    doubleScore ? (mode = 2) : mode = 1;
+    console.log(mode)
     doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
     tripleScore ? (mode3 = 3) : (mode3 = 1);
     doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
     tripleTripleScore ? (mode5 = 3) : (mode5 = 1);
    const score = ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra)
     setScore(score)
-  },[word, doubles, triples])
+  },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore])
 
     return (
         <View style={styles.container}>
-            <FlatList
+            <TouchableOpacity style={styles.button} onPress={()=>{setOpenWordModes(!openWordModes)}}>
+            <Text style={styles.score}>Word mode selection</Text>
+            </TouchableOpacity>
+            {openWordModes && <FlatList
             style={styles.wordModesList}
             data={WORDMODES}
             keyExtractor={item=>item.name}
@@ -78,7 +83,7 @@ const Score = ({setContext}: ScoreProps) => {
                     <Switch value={!!item.state} onValueChange={()=>{item.setter(!item.state)}}></Switch>
                 </View>
             )}
-            />
+            />}
             <TouchableOpacity style={styles.button} onPress={()=>handleWordCheck(word, doubles, triples)}>
             <Text style={styles.score}>Check Word</Text>
             </TouchableOpacity>
