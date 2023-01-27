@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {Text, View, StyleSheet, FlatList} from 'react-native'
+import {useState, useCallback, useEffect} from 'react'
+import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 
 type PLAYER = 
     { id: number;
@@ -23,8 +23,6 @@ const FINALS = [
     {tiles: 4, score: 0},
 ]
 
-
-
 const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
     const [winner, setWinner] = useState('');
@@ -32,7 +30,12 @@ const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
     const [finalB, setFinalB] = useState(0);
     const [finalC, setFinalC] = useState(0);
     const [finalD, setFinalD] = useState(0);
-    const [finalScores, setFinalScores] = useState([])
+    const [finalScores, setFinalScores] = useState<number[]>([0,0,0,0])
+
+    useEffect(()=>{
+        setFinalScores([finalA, finalB, finalC, finalD])
+    },[finalA, finalB, finalC, finalD])
+
     return (
         <View>
 <View style={styles.table}>
@@ -55,6 +58,9 @@ const Scoreboard = ({player1, player2, player3, player4} : ScoreboardProps) => {
         )}
          />
 </View>
+<TouchableOpacity onPress={()=>{setFinalB(finalB + 1)}}>
+    <Text style={styles.bodyText}>+1</Text>
+</TouchableOpacity>
 </View>
 
     )
