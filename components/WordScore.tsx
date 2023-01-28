@@ -1,10 +1,11 @@
-import React, {useState, useCallback, useEffect} from'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, FlatList } from 'react-native'
+import React, {useState, useCallback, useEffect, useContext} from'react'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, FlatList, SafeAreaView } from 'react-native'
 import { calculateScrabbleScore } from '../utilities/scoreCalc'
+import WordContext from '../utilities/wordContext'
 
-interface ScoreProps {
-setContext: React.Dispatch<React.SetStateAction<string[]>>
-}
+// interface ScoreProps {
+// setContext: React.Dispatch<React.SetStateAction<string[]>>
+// }
 
 type wordModes = {
         name: string;
@@ -13,7 +14,7 @@ type wordModes = {
 
 }
 
-const WordScore = ({setContext}: ScoreProps) => {
+const WordScore = () => {
     const [word, setWord] = useState('')
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
@@ -28,6 +29,7 @@ const WordScore = ({setContext}: ScoreProps) => {
     const [score, setScore] = useState(0)
     const [passScore, setPassScore] = useState(0)
     const [finalTiles, setFinalTiles] = useState<number[]>([]);
+    const [context, setContext] = useContext(WordContext)
 
 
     const WORDMODES: wordModes[]= [
@@ -41,6 +43,8 @@ const WordScore = ({setContext}: ScoreProps) => {
     useEffect(()=>{
         setContext(word.trim().toUpperCase().split(''))
     },[word])
+
+    console.log(context)
 
     const handleWordCheck = useCallback((word: string, doubles: string, triples: string) => {
         const wordSplit = word.trim().toUpperCase().split('')
@@ -102,7 +106,7 @@ const WordScore = ({setContext}: ScoreProps) => {
   }, [score, passScore])
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#29809E'}]} onPress={()=>{setOpenWordModes(!openWordModes)}}>
             <Text style={styles.score}>Word mode selection</Text>
             </TouchableOpacity>
@@ -132,7 +136,7 @@ const WordScore = ({setContext}: ScoreProps) => {
             <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
             <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
             <TextInput style={styles.textInput} value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -141,12 +145,12 @@ const styles = StyleSheet.create({
         width: 300,
     },
     textInput: {
-        borderWidth: 5,
+        borderWidth: 2,
         color: 'white',
         borderColor: '#DBB684',
-        padding: 10,
+        padding: 5,
         borderRadius: 5,
-        marginBottom: 10,
+        marginBottom: 5,
     },
     wordButtonsContainer: {
         flexDirection: 'row',

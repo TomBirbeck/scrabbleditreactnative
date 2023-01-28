@@ -85,10 +85,22 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         }        
     }
 
-    console.log(players)
     return (
-        <View>
-{/* <View style={styles.table}>
+<View>
+    <View>
+        <TextInput style={styles.nameInput} value={newName} onChangeText={setNewName}/>
+        <View style={styles.radioContainer}>
+<FlatList
+    horizontal={true}
+    data={RADIO}
+    keyExtractor={item=>item}
+    renderItem={(radio)=>(<RadioButton setPlayer={setPlayer} player={radio.item}/>)}/>
+<TouchableOpacity onPress={()=>{handleSubmitPlayer(newName, player)}}>
+    <Text style={styles.setNameButton}>set name</Text>
+</TouchableOpacity>
+        </View>
+    </View>
+    <View style={styles.table}>
     <View style={styles.tableHeader}>
         <Text style={styles.headerText}>Player</Text>
         <Text style={styles.headerText}>Score</Text>
@@ -107,23 +119,15 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
             </View>
         )}
          />       
-</View> */}
-<FlatList
-    horizontal={true}
-    data={RADIO}
-    keyExtractor={item=>item}
-    renderItem={(radio)=>(<RadioButton setPlayer={setPlayer} player={radio.item}/>)}/>
-<TextInput value={newName} onChangeText={setNewName}/>
-<TouchableOpacity onPress={()=>{handleSubmitPlayer(newName, player)}}>
-    <Text style={styles.bodyText}>set player 1</Text>
-</TouchableOpacity>
+    </View>
 </View>
     )
 }
 
 const styles = StyleSheet.create({
     table: {
-        borderWidth: 4,
+        borderWidth: 2,
+        borderRadius: 5,
         borderColor: '#DBBA84',
         height: 170
     },
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: 'space-evenly',
         borderBottomWidth: 1,
-        borderBottomColor: '#DBBA84'
+        borderBottomColor: '#DBBA84',
     },
     headerText: {
         color: 'white',
@@ -157,6 +161,26 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderRadius: 5
     },
+    radioContainer: {
+        flexDirection: 'row',
+        marginBottom: 5,
+        alignItems: 'center'
+    },
+    setNameButton: {
+        backgroundColor: '#B1ECFA',
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 5,
+        padding: 4,
+    },
+    nameInput: {
+            borderWidth: 2,
+            color: 'white',
+            borderColor: '#DBB684',
+            padding: 10,
+            borderRadius: 5,
+            marginBottom: 5,
+        },
 
 
 })
