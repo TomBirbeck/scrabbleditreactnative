@@ -1,10 +1,23 @@
-import { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { useState, useCallback } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const RadioButton = () => {
+interface RadioProps {
+    setPlayer: React.Dispatch<React.SetStateAction<string>>;
+    player: string;
+}
+
+const RadioButton = ({setPlayer, player}: RadioProps) => {
 const [selected, setSelected] = useState(false)
+
+const handleButton = useCallback(()=>{
+setSelected(!selected)
+setPlayer(player)
+},[selected, player])
+
     return (
-        <TouchableOpacity onPress={()=>{setSelected(!selected)}}>
+        <View style={styles.radioButtons}>
+        <Text style={styles.radioText}>{player}</Text>
+        <TouchableOpacity onPress={handleButton}>
             <View style={styles.outer}>
           {
               selected ?
@@ -13,6 +26,7 @@ const [selected, setSelected] = useState(false)
             }
         </View>
             </TouchableOpacity>
+        </View>
     );
   }
 
@@ -31,7 +45,15 @@ const [selected, setSelected] = useState(false)
                 width: 12,
                 borderRadius: 6,
                 backgroundColor: 'white',
-        }
+        },
+        radioButtons: {
+            marginHorizontal: 2,
+            alignItems: 'center'
+            },
+            radioText :{
+                color: 'white',
+                marginBottom: 4,
+            }
   })
 
   export default RadioButton

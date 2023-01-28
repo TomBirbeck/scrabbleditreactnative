@@ -35,7 +35,8 @@ const RADIO: string[] = [
 
 const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
-    const [player, setPlayer] = useState('player2')
+    const [player, setPlayer] = useState('')
+    const [playerTurn, setPlayerTurn] = useState('')
     const [newName, setNewName] = useState('')
     const [winner, setWinner] = useState('');
     const [finalA, setFinalA] = useState(0);
@@ -43,14 +44,12 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
     const [finalC, setFinalC] = useState(0);
     const [finalD, setFinalD] = useState(0);
     const [finalScores, setFinalScores] = useState<number[]>([0,0,0,0])
-    console.log(player2)
 
     useEffect(()=>{
         setFinalScores([finalA, finalB, finalC, finalD])
     },[finalA, finalB, finalC, finalD])
 
     function handleSubmitPlayer(object: string, player: string) {
-        console.log(object, "player", player)
             if (player === 'player1'){
         if (object.length > 0) {
                 const playerstuff = { ...player1, name: object };
@@ -86,6 +85,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         }        
     }
 
+    console.log(players)
     return (
         <View>
 {/* <View style={styles.table}>
@@ -112,13 +112,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
     horizontal={true}
     data={RADIO}
     keyExtractor={item=>item}
-    renderItem={(radio)=>(
-        <View style={styles.radioButtons}>
-            <Text style={styles.radioText}>{radio.item}</Text>
-            <RadioButton/>
-        </View>
-         )}
-         />
+    renderItem={(radio)=>(<RadioButton setPlayer={setPlayer} player={radio.item}/>)}/>
 <TextInput value={newName} onChangeText={setNewName}/>
 <TouchableOpacity onPress={()=>{handleSubmitPlayer(newName, player)}}>
     <Text style={styles.bodyText}>set player 1</Text>
@@ -163,14 +157,7 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderRadius: 5
     },
-    radioButtons: {
-    marginHorizontal: 2,
-    alignItems: 'center'
-    },
-    radioText :{
-        color: 'white',
-        marginBottom: 4,
-    }
+
 
 })
 
