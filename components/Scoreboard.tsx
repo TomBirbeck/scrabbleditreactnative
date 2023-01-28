@@ -14,8 +14,6 @@ type PLAYERSETTER =
         score: number;
     }>>
 
-
-
 interface ScoreboardProps {
     player1: PLAYER;
     player2: PLAYER;
@@ -28,7 +26,7 @@ interface ScoreboardProps {
     finals: number[]
 }
 
-const RADIO = [
+const RADIO: string[] = [
     'player1',
     'player2',
     'player3',
@@ -37,27 +35,56 @@ const RADIO = [
 
 const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
-    const [player, setPlayer] = useState('')
+    const [player, setPlayer] = useState('player2')
+    const [newName, setNewName] = useState('')
     const [winner, setWinner] = useState('');
     const [finalA, setFinalA] = useState(0);
     const [finalB, setFinalB] = useState(0);
     const [finalC, setFinalC] = useState(0);
     const [finalD, setFinalD] = useState(0);
     const [finalScores, setFinalScores] = useState<number[]>([0,0,0,0])
+    console.log(player2)
 
     useEffect(()=>{
         setFinalScores([finalA, finalB, finalC, finalD])
     },[finalA, finalB, finalC, finalD])
 
-    function handleSubmitPlayer1(object: string) {
+    function handleSubmitPlayer(object: string, player: string) {
+        console.log(object, "player", player)
+            if (player === 'player1'){
         if (object.length > 0) {
-          const playerstuff = { ...player1, name: object };
-          setPlayer1(playerstuff);
-          setPlayer('');
-        } else {
-          setPlayer1({ ...player1, name: player1.name });
-        }
-      }
+                const playerstuff = { ...player1, name: object };
+                setPlayer1(playerstuff);
+                setNewName('');
+            } else {
+                setPlayer1({ ...player1, name: player1.name });
+            }
+        } else if (player === 'player2') {
+            if (object.length > 0) {
+                const playerstuff = { ...player2, name: object };
+                setPlayer2(playerstuff);
+                setNewName('');
+            } else {
+                setPlayer2({ ...player2, name: player2.name });
+            }
+        } else if (player === 'player3') {
+            if (object.length > 0) {
+                const playerstuff = { ...player3, name: object };
+                setPlayer3(playerstuff);
+                setNewName('');
+            } else {
+                setPlayer3({ ...player3, name: player3.name });
+            }
+        } else if (player === 'player4') {
+            if (object.length > 0) {
+                const playerstuff = { ...player4, name: object };
+                setPlayer4(playerstuff);
+                setNewName('');
+            } else {
+                setPlayer4({ ...player4, name: player4.name });
+            }
+        }        
+    }
 
     return (
         <View>
@@ -92,8 +119,8 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         </View>
          )}
          />
-<TextInput value={player} onChangeText={setPlayer}/>
-<TouchableOpacity onPress={()=>{handleSubmitPlayer1(player)}}>
+<TextInput value={newName} onChangeText={setNewName}/>
+<TouchableOpacity onPress={()=>{handleSubmitPlayer(newName, player)}}>
     <Text style={styles.bodyText}>set player 1</Text>
 </TouchableOpacity>
 </View>
