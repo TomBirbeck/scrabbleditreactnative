@@ -12,15 +12,12 @@ const Display = () => {
     const [player3, setPlayer3] = useState({ id: 3, name: 'player 3', score: 0 });
     const [player4, setPlayer4] = useState({ id: 4, name: 'player 4', score: 0 });
     const [finalTiles, setFinalTiles] = useState([]);
-    // const [context, setContext] = useState([''])
 
     return(
-        // <WordContext.Provider value={[context, setContext]}>
-        <View style={styles.list}>
-            <View>
+        <View>
+            <View style={styles.displayWord}>
             <FlatList
             horizontal={true}
-            style={styles.list}
             data={word[0]}
             keyExtractor={item=>item}
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
@@ -43,14 +40,13 @@ const Display = () => {
             />
             </View>
         </View>
-        // </WordContext.Provider>
     )
 }
 
 const styles = StyleSheet.create({
-    list: {
-        flex: 1
-    },
+    displayWord :{
+        height: 50,
+    }
 })
 
 export default Display

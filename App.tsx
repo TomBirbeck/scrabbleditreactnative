@@ -6,6 +6,7 @@ import WordContext from './utilities/wordContext';
 
 export default function App() {
   const [context, setContext] = useState([''])
+
   return (
     <WordContext.Provider value={[context, setContext]}>
       <SafeAreaView style={styles.container}>
@@ -26,6 +27,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   display: {
-    flex: 2,
+    flex: 6,
   },
 });

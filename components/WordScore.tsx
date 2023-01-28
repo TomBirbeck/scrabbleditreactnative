@@ -44,8 +44,6 @@ const WordScore = () => {
         setContext(word.trim().toUpperCase().split(''))
     },[word])
 
-    console.log(context)
-
     const handleWordCheck = useCallback((word: string, doubles: string, triples: string) => {
         const wordSplit = word.trim().toUpperCase().split('')
         const doublesSplit = doubles.trim().toUpperCase().split('')
