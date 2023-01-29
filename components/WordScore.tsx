@@ -1,21 +1,23 @@
-import React, {useState, useCallback, useEffect, useContext, SetStateAction} from'react'
+import React, {useState, useCallback, useEffect, useContext} from'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, FlatList, SafeAreaView } from 'react-native'
 import { calculateScrabbleScore } from '../utilities/scoreCalc'
 import WordContext from '../utilities/wordContext'
 
 interface ScoreProps {
-// setContext: React.Dispatch<React.SetStateAction<string[]>>
-setPassScore: React.Dispatch<React.SetStateAction<number>>
+setPassScore: React.Dispatch<React.SetStateAction<number>>;
+finalScoreMode: boolean;
+setFinalScoreMode: React.Dispatch<React.SetStateAction<boolean>>;
+finalTiles: number[];
+setFinalTiles: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 type wordModes = {
         name: string;
         state: boolean;
         setter: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
-const WordScore = ({setPassScore}: ScoreProps) => {
+const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles, setFinalTiles}: ScoreProps) => {
     const [word, setWord] = useState('')
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
@@ -25,11 +27,8 @@ const WordScore = ({setPassScore}: ScoreProps) => {
     const [doubleTripleScore, setDoubleTripleScore] = useState(false);
     const [tripleTripleScore, setTripleTripleScore] = useState(false);
     const [allTiles, setAllTiles] = useState(false);
-    const [finalScoreMode, setFinalScoreMode] = useState(false);
     const [openWordModes, setOpenWordModes] = useState(false)
     const [score, setScore] = useState(0)
-    // const [passScore, setPassScore] = useState(0)
-    const [finalTiles, setFinalTiles] = useState<number[]>([]);
     const [context, setContext] = useContext(WordContext)
 
 
@@ -65,7 +64,7 @@ const WordScore = ({setPassScore}: ScoreProps) => {
     setScore(score)
   },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore])
 
-  const handleWordSubmit = useCallback((word: string, doubles: string, triples: string) => {
+  const handleWordSubmit = (word: string, doubles: string, triples: string) => {
         const wordSplit = word.trim().toUpperCase().split('')
         const doublesSplit = doubles.trim().toUpperCase().split('')
         const triplesSplit = triples.trim().toUpperCase().split('')
@@ -87,10 +86,10 @@ const WordScore = ({setPassScore}: ScoreProps) => {
     setPassScore(
         (calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra);
     }
-    if (finalScoreMode === true) {
-    let scores = finalTiles
+    else if (finalScoreMode === true) {
+        let scores = [...finalTiles]
         scores.push((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})))
-      setFinalTiles(scores)
+        setFinalTiles(scores)
     }
       setWord('');
     setDoubles('');
@@ -102,8 +101,7 @@ const WordScore = ({setPassScore}: ScoreProps) => {
     setDoubleTripleScore(false);
     setTripleTripleScore(false);
     setAllTiles(false);
-  }, [score])
-
+  }
 
     return (
         <SafeAreaView style={styles.container}>

@@ -182,6 +182,11 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         </View>
     </View> 
     }
+    <View>
+        <TouchableOpacity onPress={()=>{handleWinner(player1, player2, player3, player4, finals)}}>
+            <Text>End Game</Text>
+        </TouchableOpacity>
+    </View>
     <View style={styles.table}>
     <View style={styles.tableHeader}>
         <Text style={styles.headerText}>Player</Text>
@@ -194,7 +199,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         keyExtractor={(player) => player.name}
         renderItem={(player)=>(
             <View style={styles.tableBody}>
-                <TouchableOpacity onPress={()=>{setPlayerTurn(player.item)}}>
+                <TouchableOpacity onPress={() => {setPlayerTurn(player.item)}}>
             <Text style={[styles.bodyText, styles.playerButton]}>{player.item.name}</Text>
                 </TouchableOpacity>
             <Text style={styles.bodyText}>{player.item.score}</Text>

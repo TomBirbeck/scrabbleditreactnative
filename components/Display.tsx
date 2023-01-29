@@ -11,9 +11,10 @@ const Display = () => {
     const [player2, setPlayer2] = useState({ id: 2, name: 'player 2', score: 0 });
     const [player3, setPlayer3] = useState({ id: 3, name: 'player 3', score: 0 });
     const [player4, setPlayer4] = useState({ id: 4, name: 'player 4', score: 0 });
-    const [playerTurn, setPlayerTurn] = useState({id: 3, name: 'hey', score: 0})
+    const [playerTurn, setPlayerTurn] = useState({id: 0, name: '', score: 0})
     const [passScore, setPassScore] = useState(0)
-    const [finalTiles, setFinalTiles] = useState([]);
+    const [finalScoreMode, setFinalScoreMode] = useState(false)
+    const [finalTiles, setFinalTiles] = useState<number[]>([]);
 
     useEffect(()=> {
         function isolate(player: {id: number, name: string, score: number}, passScore: number) {
@@ -34,6 +35,7 @@ const Display = () => {
       }
         isolate(playerTurn, passScore)
         setPlayerTurn({id: 0, name: '', score: 0})
+        setPassScore(0)
       }, [passScore])
 
     return(
@@ -46,11 +48,22 @@ const Display = () => {
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
             />
             </View>
-            { playerTurn.id > 0 && <View>
+            { playerTurn.id > 0 ? <View>
                 <Text style={styles.turnText}>It's {playerTurn.name}'s turn</Text>
-            </View>}
+            </View>
+            : finalScoreMode === true ? <View>
+                <Text style={styles.turnText}>Final Score Mode Active</Text>
+            </View>
+            : null
+            }
             <View>
-                <WordScore setPassScore={setPassScore}/>
+                <WordScore
+                setPassScore={setPassScore}
+                finalScoreMode={finalScoreMode}
+                setFinalScoreMode={setFinalScoreMode}
+                finalTiles={finalTiles}
+                setFinalTiles={setFinalTiles}
+                />
             </View>
             <View>
             <Scoreboard 
