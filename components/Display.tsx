@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from "react-native"
+import { FlatList, StyleSheet, View, Text } from "react-native"
 import {useContext, useState} from 'react'
 import WordContext from "../utilities/wordContext"
 import DisplayWord from "./DisplayWord"
@@ -11,6 +11,7 @@ const Display = () => {
     const [player2, setPlayer2] = useState({ id: 2, name: 'player 2', score: 0 });
     const [player3, setPlayer3] = useState({ id: 3, name: 'player 3', score: 0 });
     const [player4, setPlayer4] = useState({ id: 4, name: 'player 4', score: 0 });
+    const [playerTurn, setPlayerTurn] = useState('')
     const [finalTiles, setFinalTiles] = useState([]);
 
     return(
@@ -23,6 +24,9 @@ const Display = () => {
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
             />
             </View>
+            { playerTurn && <View>
+                <Text style={styles.turnText}>It's {playerTurn}'s turn</Text>
+            </View>}
             <View>
                 <WordScore/>
             </View>
@@ -37,6 +41,8 @@ const Display = () => {
             setPlayer3={setPlayer3}
             setPlayer4={setPlayer4}
             finals={finalTiles}
+            playerTurn={playerTurn}
+            setPlayerTurn={setPlayerTurn}
             />
             </View>
         </View>
@@ -46,6 +52,10 @@ const Display = () => {
 const styles = StyleSheet.create({
     displayWord :{
         height: 50,
+    },
+    turnText: {
+        color: 'white',
+        textAlign: 'center',
     }
 })
 

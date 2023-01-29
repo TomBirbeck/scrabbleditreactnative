@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Text, View, StyleSheet, FlatList, TouchableOpacity, TextInput} from 'react-native'
 import RadioButton from './RadioButton';
 
@@ -23,7 +23,9 @@ interface ScoreboardProps {
     setPlayer2: PLAYERSETTER;
     setPlayer3: PLAYERSETTER;
     setPlayer4: PLAYERSETTER;
-    finals: number[]
+    finals: number[];
+    playerTurn: string;
+    setPlayerTurn: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const RADIO: string[] = [
@@ -33,10 +35,9 @@ const RADIO: string[] = [
     'player4'
 ]
 
-const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals} : ScoreboardProps) => {
+const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals, playerTurn, setPlayerTurn} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
     const [player, setPlayer] = useState('')
-    const [playerTurn, setPlayerTurn] = useState('')
     const [newName, setNewName] = useState('')
     const [winner, setWinner] = useState('');
     const [finalA, setFinalA] = useState(0);
@@ -44,6 +45,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
     const [finalC, setFinalC] = useState(0);
     const [finalD, setFinalD] = useState(0);
     const [finalScores, setFinalScores] = useState<number[]>([0,0,0,0])
+    const [openNames, setOpenNames] = useState(false)
 
     useEffect(()=>{
         setFinalScores([finalA, finalB, finalC, finalD])
@@ -87,7 +89,10 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
 
     return (
 <View>
-    <View>
+<TouchableOpacity onPress={()=>{setOpenNames(!openNames)}}>
+        <Text style={styles.toggleName}>Toggle Name Entry</Text>
+    </TouchableOpacity>
+   { openNames && <View>
         <TextInput style={styles.nameInput} value={newName} onChangeText={setNewName}/>
         <View style={styles.radioContainer}>
 <FlatList
@@ -99,7 +104,8 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
     <Text style={styles.setNameButton}>set name</Text>
 </TouchableOpacity>
         </View>
-    </View>
+    </View> 
+    }
     <View style={styles.table}>
     <View style={styles.tableHeader}>
         <Text style={styles.headerText}>Player</Text>
@@ -112,7 +118,9 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         keyExtractor={(player) => player.name}
         renderItem={(player)=>(
             <View style={styles.tableBody}>
+                <TouchableOpacity onPress={()=>{setPlayerTurn(player.item.name)}}>
             <Text style={[styles.bodyText, styles.playerButton]}>{player.item.name}</Text>
+                </TouchableOpacity>
             <Text style={styles.bodyText}>{player.item.score}</Text>
             <Text style={styles.bodyText}>{finals[player.item.id - 1]}</Text>
             <Text style={styles.bodyText}>{finalScores[player.item.id - 1]}</Text>
@@ -181,7 +189,15 @@ const styles = StyleSheet.create({
             borderRadius: 5,
             marginBottom: 5,
         },
-
+        toggleName: {
+            backgroundColor: '#B1ECFA',
+            borderWidth: 1,
+            borderRadius: 5,
+            textAlign: 'center',
+            marginBottom: 2,
+            width: 130,
+            padding: 5
+        }
 
 })
 
