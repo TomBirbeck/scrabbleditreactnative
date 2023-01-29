@@ -12,6 +12,7 @@ const Display = () => {
     const [player3, setPlayer3] = useState({ id: 3, name: 'player 3', score: 0 });
     const [player4, setPlayer4] = useState({ id: 4, name: 'player 4', score: 0 });
     const [playerTurn, setPlayerTurn] = useState('')
+    const [passScore, setPassScore] = useState(0)
     const [finalTiles, setFinalTiles] = useState([]);
 
     return(
@@ -28,7 +29,7 @@ const Display = () => {
                 <Text style={styles.turnText}>It's {playerTurn}'s turn</Text>
             </View>}
             <View>
-                <WordScore/>
+                <WordScore setPassScore={setPassScore}/>
             </View>
             <View>
             <Scoreboard 
@@ -43,6 +44,7 @@ const Display = () => {
             finals={finalTiles}
             playerTurn={playerTurn}
             setPlayerTurn={setPlayerTurn}
+            passScore={passScore}
             />
             </View>
         </View>

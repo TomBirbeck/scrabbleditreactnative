@@ -1,11 +1,12 @@
-import React, {useState, useCallback, useEffect, useContext} from'react'
+import React, {useState, useCallback, useEffect, useContext, SetStateAction} from'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, FlatList, SafeAreaView } from 'react-native'
 import { calculateScrabbleScore } from '../utilities/scoreCalc'
 import WordContext from '../utilities/wordContext'
 
-// interface ScoreProps {
+interface ScoreProps {
 // setContext: React.Dispatch<React.SetStateAction<string[]>>
-// }
+setPassScore: React.Dispatch<React.SetStateAction<number>>
+}
 
 type wordModes = {
         name: string;
@@ -14,7 +15,7 @@ type wordModes = {
 
 }
 
-const WordScore = () => {
+const WordScore = ({setPassScore}: ScoreProps) => {
     const [word, setWord] = useState('')
     const [doubles, setDoubles] = useState('')
     const [triples, setTriples] = useState('')
@@ -27,7 +28,7 @@ const WordScore = () => {
     const [finalScoreMode, setFinalScoreMode] = useState(false);
     const [openWordModes, setOpenWordModes] = useState(false)
     const [score, setScore] = useState(0)
-    const [passScore, setPassScore] = useState(0)
+    // const [passScore, setPassScore] = useState(0)
     const [finalTiles, setFinalTiles] = useState<number[]>([]);
     const [context, setContext] = useContext(WordContext)
 
@@ -55,11 +56,11 @@ const WordScore = () => {
     let mode5 = 1;
     let extra = 0;
     allTiles ? (extra = 50): extra = 0;
-    doubleScore ? (mode = 2) : mode = 1;
-    doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
-    tripleScore ? (mode3 = 3) : (mode3 = 1);
-    doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
-    tripleTripleScore ? (mode5 = 3) : (mode5 = 1);
+    doubleScore && (mode = 2);
+    doubleDoubleScore && (mode = 2, mode2 = 2);
+    tripleScore && (mode3 = 3);
+    doubleTripleScore && (mode2 = 2,mode4 = 3);
+    tripleTripleScore && (mode3 = 3, mode5 = 3);
    const score = ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra)
     setScore(score)
   },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore])
@@ -76,11 +77,11 @@ const WordScore = () => {
     let mode5 = 1;
     let extra = 0;
     allTiles ? extra = 50: extra = 0;
-    doubleScore ? (mode = 2) :  (mode = 1);
-    doubleDoubleScore ? (mode2 = 2) :  (mode2 = 1);
-    tripleScore ? (mode3 = 3) : (mode3 = 1);
-    doubleTripleScore ? (mode4 = 3) : (mode4 = 1);
-    tripleTripleScore ? (mode5 = 3) : (mode5 = 1);
+    doubleScore && (mode = 2);
+    doubleDoubleScore && (mode = 2, mode2 = 2);
+    tripleScore && (mode3 = 3);
+    doubleTripleScore && (mode2 = 2,mode4 = 3);
+    tripleTripleScore && (mode3 = 3, mode5 = 3);
     setScore(
       (calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra);
     setPassScore(
@@ -101,7 +102,7 @@ const WordScore = () => {
     setDoubleTripleScore(false);
     setTripleTripleScore(false);
     setAllTiles(false);
-  }, [score, passScore])
+  }, [score])
 
     return (
         <SafeAreaView style={styles.container}>

@@ -26,6 +26,7 @@ interface ScoreboardProps {
     finals: number[];
     playerTurn: string;
     setPlayerTurn: React.Dispatch<React.SetStateAction<string>>;
+    passScore: number;
 }
 
 const RADIO: string[] = [
@@ -87,10 +88,72 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         }        
     }
 
+    function handleWinner(a: PLAYER, b: PLAYER, c: PLAYER, d: PLAYER, finalTiles: number[]) {
+        const extra = finalTiles.reduce(function (a, b) {
+          return a + b;
+        }, 0);
+        let finalA = 0;
+        let finalB = 0;
+        let finalC = 0;
+        let finalD = 0;
+        if (finalTiles[0] === 0) {
+          finalA = a.score - finalTiles[0] + extra;
+        }
+        setFinalA(finalA);
+        if (finalTiles[0] !== 0 && finalTiles[0]) {
+          finalA = a.score - finalTiles[0];
+          if (!Number.isNaN(finalA)) {
+            setFinalA(finalA);
+          }
+          if (Number.isNaN(finalA)) {
+            setFinalA(0);
+          }
+        }
+        if (finalTiles[1] === 0) {
+          finalB = b.score - finalTiles[1] + extra;
+        }
+        setFinalB(finalB);
+        if (finalTiles[1] !== 0 && finalTiles[1]) {
+          finalB = b.score - finalTiles[1];
+          if (!Number.isNaN(finalB)) {
+            setFinalB(finalB);
+          }
+          if (Number.isNaN(finalB)) {
+            setFinalB(0);
+          }
+        }
+        if (finalTiles[2] === 0) {
+          finalC = c.score - finalTiles[2] + extra;
+        }
+        setFinalC(finalC);
+        if (finalTiles[2] !== 0 && finalTiles[2]) {
+          finalC = c.score - finalTiles[2];
+          if (!Number.isNaN(finalC)) {
+            setFinalC(finalC);
+          }
+          if (Number.isNaN(finalC)) {
+            setFinalC(0);
+          }
+        }
+        if (finalTiles[3] === 0) {
+          finalD = d.score - finalTiles[3] + extra;
+        }
+        setFinalD(finalD);
+        if (finalTiles[3] !== 0) {
+          finalD = d.score - finalTiles[3];
+          if (!Number.isNaN(finalD)) {
+            setFinalD(finalD);
+          }
+          if (Number.isNaN(finalD)) {
+            setFinalD(0);
+          }
+        }
+    }
+
     return (
 <View>
 <TouchableOpacity onPress={()=>{setOpenNames(!openNames)}}>
-        <Text style={styles.toggleName}>Toggle Name Entry</Text>
+        <Text style={styles.toggleName}>Change Names</Text>
     </TouchableOpacity>
    { openNames && <View>
         <TextInput style={styles.nameInput} value={newName} onChangeText={setNewName}/>
@@ -195,7 +258,7 @@ const styles = StyleSheet.create({
             borderRadius: 5,
             textAlign: 'center',
             marginBottom: 2,
-            width: 130,
+            width: 110,
             padding: 5
         }
 
