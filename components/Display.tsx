@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View, Text } from "react-native"
-import {useContext, useState} from 'react'
+import {useContext, useState, useEffect} from 'react'
 import WordContext from "../utilities/wordContext"
 import DisplayWord from "./DisplayWord"
 import Scoreboard from "./Scoreboard"
@@ -11,9 +11,30 @@ const Display = () => {
     const [player2, setPlayer2] = useState({ id: 2, name: 'player 2', score: 0 });
     const [player3, setPlayer3] = useState({ id: 3, name: 'player 3', score: 0 });
     const [player4, setPlayer4] = useState({ id: 4, name: 'player 4', score: 0 });
-    const [playerTurn, setPlayerTurn] = useState('')
+    const [playerTurn, setPlayerTurn] = useState({id: 3, name: 'hey', score: 0})
     const [passScore, setPassScore] = useState(0)
     const [finalTiles, setFinalTiles] = useState([]);
+
+    useEffect(()=> {
+        function isolate(player: {id: number, name: string, score: number}, passScore: number) {
+          const newScore = player.score + passScore;
+          let object = { ...player, score: newScore };
+          if (player.id === 1) {
+            setPlayer1(object);
+          }
+          if (player.id === 2) {
+            setPlayer2(object);
+          }
+          if (player.id === 3) {
+            setPlayer3(object);
+          }
+          if (player.id === 4) {
+            setPlayer4(object);
+          }
+      }
+        isolate(playerTurn, passScore)
+        setPlayerTurn({id: 0, name: '', score: 0})
+      }, [passScore])
 
     return(
         <View>
@@ -25,8 +46,8 @@ const Display = () => {
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
             />
             </View>
-            { playerTurn && <View>
-                <Text style={styles.turnText}>It's {playerTurn}'s turn</Text>
+            { playerTurn.id > 0 && <View>
+                <Text style={styles.turnText}>It's {playerTurn.name}'s turn</Text>
             </View>}
             <View>
                 <WordScore setPassScore={setPassScore}/>

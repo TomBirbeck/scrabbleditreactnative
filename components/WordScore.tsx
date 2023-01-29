@@ -104,6 +104,7 @@ const WordScore = ({setPassScore}: ScoreProps) => {
     setAllTiles(false);
   }, [score])
 
+
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#29809E'}]} onPress={()=>{setOpenWordModes(!openWordModes)}}>

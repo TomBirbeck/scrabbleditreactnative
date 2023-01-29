@@ -24,8 +24,8 @@ interface ScoreboardProps {
     setPlayer3: PLAYERSETTER;
     setPlayer4: PLAYERSETTER;
     finals: number[];
-    playerTurn: string;
-    setPlayerTurn: React.Dispatch<React.SetStateAction<string>>;
+    playerTurn: PLAYER;
+    setPlayerTurn: PLAYERSETTER;
     passScore: number;
 }
 
@@ -36,7 +36,7 @@ const RADIO: string[] = [
     'player4'
 ]
 
-const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals, playerTurn, setPlayerTurn} : ScoreboardProps) => {
+const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals, playerTurn, setPlayerTurn, passScore} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
     const [player, setPlayer] = useState('')
     const [newName, setNewName] = useState('')
@@ -148,6 +148,19 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
             setFinalD(0);
           }
         }
+        const players = [
+            { name: a.name, score: finalA },
+            { name: b.name, score: finalB },
+            { name: c.name, score: finalC },
+            { name: d.name, score: finalD },
+          ];
+          const winner = players.sort((a, b) => {
+            return b.score - a.score;
+          })[0];
+          setWinner(winner.name);
+      
+        //   console.log('final scores', finalA, finalB, finalC, finalD);
+        //   console.log('winner', winner);
     }
 
     return (
@@ -181,7 +194,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         keyExtractor={(player) => player.name}
         renderItem={(player)=>(
             <View style={styles.tableBody}>
-                <TouchableOpacity onPress={()=>{setPlayerTurn(player.item.name)}}>
+                <TouchableOpacity onPress={()=>{setPlayerTurn(player.item)}}>
             <Text style={[styles.bodyText, styles.playerButton]}>{player.item.name}</Text>
                 </TouchableOpacity>
             <Text style={styles.bodyText}>{player.item.score}</Text>
