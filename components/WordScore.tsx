@@ -62,7 +62,7 @@ const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles,
     tripleTripleScore && (mode3 = 3, mode5 = 3);
    const score = ((calculateScrabbleScore({word:wordSplit, doubles: doublesSplit, triples: triplesSplit})* mode) * mode2 * mode3 * mode4 * mode5 + extra)
     setScore(score)
-  },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore])
+  },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore, allTiles])
 
   const handleWordSubmit = (word: string, doubles: string, triples: string) => {
         const wordSplit = word.trim().toUpperCase().split('')
@@ -105,11 +105,28 @@ const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles,
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.score}>Word Score: {score}</Text>
+            <View style={styles.bonusesContainer}>
+            <Text style={styles.bonuses}>Active Bonuses:</Text>
+            {allTiles && <Text style={styles.bonuses}>All Tiles</Text>}
+            {doubleScore ? <Text style={styles.bonuses}>Double Word</Text>
+            : doubleDoubleScore ? <Text style={styles.bonuses}>Double Double Word</Text>
+            : tripleScore ? <Text style={styles.bonuses}>Triple Word</Text>
+            : doubleTripleScore ? <Text style={styles.bonuses}>Double Triple Word</Text>
+            : tripleTripleScore ? <Text style={styles.bonuses}>Triple Triple Word</Text>
+            : null
+            }
+            </View>
+            <View style={styles.modesButtonContainer}>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#29809E'}]} onPress={()=>{setOpenWordModes(!openWordModes)}}>
             <Text style={styles.score}>Word mode selection</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, {backgroundColor: 'gold'}]} onPress={()=>{setFinalScoreMode(!finalScoreMode)}}>
-            <Text style={styles.score}>Final Score Mode</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#B1ECFA'}]} onPress={()=>{setAllTiles(!allTiles)}}>
+                <Text>All Tiles Used</Text>
+            </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#F7E441', alignSelf: 'center'}]} onPress={()=>{setFinalScoreMode(!finalScoreMode)}}>
+            <Text>Final Score Mode</Text>
             </TouchableOpacity>
             {openWordModes && <FlatList
             style={styles.wordModesList}
@@ -130,7 +147,6 @@ const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles,
             <Text style={styles.score}>Submit Word</Text>
             </TouchableOpacity>
             </View>
-            <Text style={styles.score}>Score: {score}</Text>
             <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
             <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
             <TextInput style={styles.textInput} value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
@@ -166,6 +182,13 @@ const styles = StyleSheet.create({
     score: {
         color: 'white'
     },
+    bonusesContainer:{
+        marginVertical: 5
+    },
+    bonuses: {
+        color: 'white',
+        marginBottom: 1,
+    },
     wordModesList: {
     height: 250,
     },
@@ -173,6 +196,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    modesButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 })
 

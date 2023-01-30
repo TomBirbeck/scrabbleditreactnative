@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   display: {
-    flex: 6,
+    flex: 5,
   },
 });

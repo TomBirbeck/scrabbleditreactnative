@@ -165,9 +165,14 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
 
     return (
 <View>
+    <View style={styles.topButtonContainer}>
 <TouchableOpacity onPress={()=>{setOpenNames(!openNames)}}>
         <Text style={styles.toggleName}>Change Names</Text>
     </TouchableOpacity>
+        <TouchableOpacity onPress={()=>{handleWinner(player1, player2, player3, player4, finals)}}>
+            <Text style={styles.endGameButton}>End Game</Text>
+        </TouchableOpacity>
+    </View>
    { openNames && <View>
         <TextInput style={styles.nameInput} value={newName} onChangeText={setNewName}/>
         <View style={styles.radioContainer}>
@@ -182,11 +187,6 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         </View>
     </View> 
     }
-    <View>
-        <TouchableOpacity onPress={()=>{handleWinner(player1, player2, player3, player4, finals)}}>
-            <Text>End Game</Text>
-        </TouchableOpacity>
-    </View>
     <View style={styles.table}>
     <View style={styles.tableHeader}>
         <Text style={styles.headerText}>Player</Text>
@@ -272,12 +272,24 @@ const styles = StyleSheet.create({
         },
         toggleName: {
             backgroundColor: '#B1ECFA',
-            borderWidth: 1,
             borderRadius: 5,
             textAlign: 'center',
             marginBottom: 2,
             width: 110,
             padding: 5
+        }, 
+        endGameButton: {
+            borderRadius: 5,
+            backgroundColor: '#F7E441',
+            // color: 'white',
+            textAlign: 'center',
+            width: 100,
+            padding: 5,
+            marginBottom: 2,
+        },
+        topButtonContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
         }
 
 })
