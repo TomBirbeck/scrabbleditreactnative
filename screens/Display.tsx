@@ -1,11 +1,12 @@
-import { FlatList, StyleSheet, View, Text } from "react-native"
+import { FlatList, StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from "react-native"
 import {useContext, useState, useEffect} from 'react'
 import WordContext from "../utilities/wordContext"
-import DisplayWord from "./DisplayWord"
-import Scoreboard from "./Scoreboard"
-import WordScore from "./WordScore"
+import DisplayWord from "../components/DisplayWord"
+import Scoreboard from "../components/Scoreboard"
+import WordScore from "../components/WordScore"
+import Header from "../components/Header"
 
-const Display = () => {
+const Display = ({navigation}: any) => {
     const word = useContext(WordContext)
     const [player1, setPlayer1] = useState({ id: 1, name: 'player 1', score: 0 });
     const [player2, setPlayer2] = useState({ id: 2, name: 'player 2', score: 0 });
@@ -40,7 +41,16 @@ const Display = () => {
       }, [passScore])
 
     return(
-        <View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.aboutContainer}>
+      <TouchableOpacity onPress={() => {navigation.navigate('About')}}>
+          <View style={styles.aboutButton}>
+            <Text style={styles.aboutText}>About</Text>
+          </View>
+          </TouchableOpacity>
+          </View>
+      <Header/>
+        <View style={styles.display}>
             <View style={styles.displayWord}>
               {finalScoreMode && winner ?<View style={styles.winnerBox}><Text style={styles.winnerText}>Congratulations {winner}, you are the winner!</Text></View>
               :
@@ -88,10 +98,36 @@ const Display = () => {
             />
             </View>
         </View>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#26584C',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  display: {
+    flex: 5,
+  },
+  aboutContainer: {
+    width: 310,
+    paddingTop: 2,
+  },
+  aboutButton: {
+alignSelf: 'flex-end',
+borderWidth: 1,
+backgroundColor: '#3A9366',
+paddingVertical: 2,
+paddingHorizontal: 5,
+borderRadius: 5
+  },
+  aboutText: {
+    textAlign:'center',
+    color: 'white'
+  },
     displayWord :{
         height: 50,
         justifyContent: 'center',

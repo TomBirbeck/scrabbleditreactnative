@@ -1,20 +1,34 @@
+import 'react-native-gesture-handler'
 import { useState } from 'react';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
-import Display from './components/Display';
+import {createStackNavigator} from '@react-navigation/stack'
+import {NavigationContainer} from '@react-navigation/native'
+import About from './screens/About';
+import Display from './screens/Display';
 import Header from './components/Header';
 import WordContext from './utilities/wordContext';
+
+const MainStack = createStackNavigator()
+
 
 export default function App() {
   const [context, setContext] = useState([''])
 
   return (
     <WordContext.Provider value={[context, setContext]}>
-      <SafeAreaView style={styles.container}>
+      <NavigationContainer>
+      <MainStack.Navigator>
+        <MainStack.Screen name='Display' component={Display} options={{headerShown:false}}/>
+        <MainStack.Screen name='About' component={About}/>
+      </MainStack.Navigator>
+      </NavigationContainer>
+      {/* <Display/> */}
+      {/* <SafeAreaView style={styles.container}>
       <Header/>
       <View style={styles.display}>
-      <Display/>
+      // <Display/>
       </View>
-      </SafeAreaView>
+      </SafeAreaView> */}
    </WordContext.Provider>
     );
 }

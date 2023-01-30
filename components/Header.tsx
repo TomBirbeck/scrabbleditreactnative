@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
 
 const Header: React.FC = () => {
 
@@ -16,9 +16,7 @@ const Header: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-    //   backgroundColor: '#26584C',
       alignItems: 'center',
-      // justifyContent: 'center',
     },
     bannerContainer: {
       backgroundColor: '#E53E48',
@@ -27,7 +25,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingHorizontal: 20,
       borderRadius: 5,
-      marginTop: 4,
     },
     bannerText: {
       color: 'white',
