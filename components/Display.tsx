@@ -15,6 +15,7 @@ const Display = () => {
     const [passScore, setPassScore] = useState(0)
     const [finalScoreMode, setFinalScoreMode] = useState(false)
     const [finalTiles, setFinalTiles] = useState<number[]>([]);
+    const [winner, setWinner] = useState('');
 
     useEffect(()=> {
         function isolate(player: {id: number, name: string, score: number}, passScore: number) {
@@ -41,12 +42,15 @@ const Display = () => {
     return(
         <View>
             <View style={styles.displayWord}>
+              {finalScoreMode && winner ?<View style={styles.winnerBox}><Text style={styles.winnerText}>Congratulations {winner}, you are the winner!</Text></View>
+              :
             <FlatList
             horizontal={true}
             data={word[0]}
             keyExtractor={item=>item}
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
             />
+              }
             </View>
             { playerTurn.id > 0 ? <View>
                 <Text style={styles.turnText}>It's {playerTurn.name}'s turn</Text>
@@ -60,7 +64,6 @@ const Display = () => {
                 <WordScore
                 setPassScore={setPassScore}
                 finalScoreMode={finalScoreMode}
-                setFinalScoreMode={setFinalScoreMode}
                 finalTiles={finalTiles}
                 setFinalTiles={setFinalTiles}
                 />
@@ -79,6 +82,9 @@ const Display = () => {
             playerTurn={playerTurn}
             setPlayerTurn={setPlayerTurn}
             passScore={passScore}
+            setFinalScoreMode={setFinalScoreMode}
+            finalScoreMode={finalScoreMode}
+            setWinner={setWinner}
             />
             </View>
         </View>
@@ -94,6 +100,20 @@ const styles = StyleSheet.create({
     turnText: {
         color: 'white',
         textAlign: 'center',
+    },
+    winnerBox:{
+      backgroundColor: '#F7E441',
+      width: 300,
+      height: 40,
+      borderWidth: 2,
+      borderColor: '#DBBA84',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 5,
+      borderRadius: 5,
+    },
+    winnerText: {
+      fontSize: 14
     }
 })
 

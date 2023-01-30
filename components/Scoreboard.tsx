@@ -27,6 +27,9 @@ interface ScoreboardProps {
     playerTurn: PLAYER;
     setPlayerTurn: PLAYERSETTER;
     passScore: number;
+    setFinalScoreMode: React.Dispatch<React.SetStateAction<boolean>>;
+    finalScoreMode: boolean;
+    setWinner: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const RADIO: string[] = [
@@ -36,11 +39,10 @@ const RADIO: string[] = [
     'player4'
 ]
 
-const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals, playerTurn, setPlayerTurn, passScore} : ScoreboardProps) => {
+const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2, setPlayer3, setPlayer4, finals, playerTurn, setPlayerTurn, passScore, setFinalScoreMode, finalScoreMode, setWinner} : ScoreboardProps) => {
     const players = [player1, player2, player3, player4]
     const [player, setPlayer] = useState('')
     const [newName, setNewName] = useState('')
-    const [winner, setWinner] = useState('');
     const [finalA, setFinalA] = useState(0);
     const [finalB, setFinalB] = useState(0);
     const [finalC, setFinalC] = useState(0);
@@ -165,15 +167,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
 
     return (
 <View>
-    <View style={styles.topButtonContainer}>
-<TouchableOpacity onPress={()=>{setOpenNames(!openNames)}}>
-        <Text style={styles.toggleName}>Change Names</Text>
-    </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{handleWinner(player1, player2, player3, player4, finals)}}>
-            <Text style={styles.endGameButton}>End Game</Text>
-        </TouchableOpacity>
-    </View>
-   { openNames && <View>
+{ openNames && <View>
         <TextInput style={styles.nameInput} value={newName} onChangeText={setNewName}/>
         <View style={styles.radioContainer}>
 <FlatList
@@ -187,6 +181,17 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
         </View>
     </View> 
     }
+    <View style={styles.topButtonContainer}>
+<TouchableOpacity onPress={()=>{setOpenNames(!openNames)}}>
+        <Text style={styles.toggleName}>Change Names</Text>
+    </TouchableOpacity>
+        <TouchableOpacity onPress={()=>{handleWinner(player1, player2, player3, player4, finals)}}>
+            <Text style={styles.endGameButton}>End Game</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {setFinalScoreMode(!finalScoreMode)}}>
+        <Text style={styles.endGameButton}>Final Tiles</Text>
+        </TouchableOpacity>
+    </View>
     <View style={styles.table}>
     <View style={styles.tableHeader}>
         <Text style={styles.headerText}>Player</Text>
@@ -218,11 +223,12 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5,
         borderColor: '#DBBA84',
-        height: 170
+        height: 170,
+        width: 300,
     },
     tableHeader: {
         flexDirection: 'row',
-        width: 300,
+        width: 298,
         justifyContent: 'space-evenly',
         borderBottomWidth: 1,
         borderBottomColor: '#DBBA84',
@@ -234,7 +240,7 @@ const styles = StyleSheet.create({
     },
     tableBody: {
         flexDirection: 'row',
-        width: 300,
+        width: 298,
         justifyContent:'space-evenly',
     },
     bodyText: {
@@ -257,10 +263,10 @@ const styles = StyleSheet.create({
     },
     setNameButton: {
         backgroundColor: '#B1ECFA',
-        borderWidth: 1,
-        borderColor: 'white',
+        width: 80,
+        textAlign: 'center',
         borderRadius: 5,
-        padding: 4,
+        padding: 5,
     },
     nameInput: {
             borderWidth: 2,
@@ -281,17 +287,15 @@ const styles = StyleSheet.create({
         endGameButton: {
             borderRadius: 5,
             backgroundColor: '#F7E441',
-            // color: 'white',
             textAlign: 'center',
-            width: 100,
+            width: 90,
             padding: 5,
             marginBottom: 2,
         },
         topButtonContainer: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginHorizontal: 6,
-            marginVertical: 4,
+            marginBottom: 4,
         }
 
 })
