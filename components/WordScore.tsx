@@ -107,25 +107,36 @@ const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles,
         <SafeAreaView style={styles.container}>
             <Text style={styles.score}>Word Score: {score}</Text>
             <View style={styles.bonusesContainer}>
-            <Text style={styles.bonuses}>Active Bonuses:</Text>
-            {allTiles && <Text style={styles.bonuses}>All Tiles</Text>}
-            {doubleScore ? <Text style={styles.bonuses}>Double Word</Text>
-            : doubleDoubleScore ? <Text style={styles.bonuses}>Double Double Word</Text>
-            : tripleScore ? <Text style={styles.bonuses}>Triple Word</Text>
-            : doubleTripleScore ? <Text style={styles.bonuses}>Double Triple Word</Text>
-            : tripleTripleScore ? <Text style={styles.bonuses}>Triple Triple Word</Text>
+            <Text style={styles.bonusesHeader}>Active Bonuses</Text>
+            {allTiles && <Text style={styles.bonuses}>- All Tiles</Text>}
+            {doubleScore ? <Text style={styles.bonuses}>- Double Word</Text>
+            : doubleDoubleScore ? <Text style={styles.bonuses}>- Double Double Word</Text>
+            : tripleScore ? <Text style={styles.bonuses}>- Triple Word</Text>
+            : doubleTripleScore ? <Text style={styles.bonuses}>- Double Triple Word</Text>
+            : tripleTripleScore ? <Text style={styles.bonuses}>- Triple Triple Word</Text>
             : null
             }
             </View>
+            <View style={styles.wordModes}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordCheck(word, doubles, triples)}>
+            <Text style={styles.buttonText}>Check Word</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordSubmit(word, doubles, triples)}>
+            <Text style={styles.buttonText}>Submit Word</Text>
+            </TouchableOpacity>
+            </View>
+            <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
+            <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
+            <TextInput style={styles.textInput} value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
             <View style={styles.modesButtonContainer}>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#29809E'}]} onPress={()=>{setOpenWordModes(!openWordModes)}}>
-            <Text style={styles.score}>Word mode selection</Text>
+            <Text style={styles.buttonText}>Word mode selection</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#B1ECFA'}]} onPress={()=>{setAllTiles(!allTiles)}}>
                 <Text>All Tiles Used</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.button, {backgroundColor: '#F7E441', alignSelf: 'center'}]} onPress={()=>{setFinalScoreMode(!finalScoreMode)}}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#F7E441', alignSelf: 'flex-end'}]} onPress={()=>{setFinalScoreMode(!finalScoreMode)}}>
             <Text>Final Score Mode</Text>
             </TouchableOpacity>
             {openWordModes && <FlatList
@@ -134,22 +145,11 @@ const WordScore = ({setPassScore, setFinalScoreMode, finalScoreMode, finalTiles,
             keyExtractor={item=>item.name}
             renderItem={({item})=> (
                 <View style={styles.wordModes}>
-                    <Text style={styles.score}>{item.name}</Text>
+                    <Text style={styles.buttonText}>{item.name}</Text>
                     <Switch value={!!item.state} onValueChange={()=>{item.setter(!item.state)}}></Switch>
                 </View>
             )}
             />}
-            <View style={styles.wordModes}>
-            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordCheck(word, doubles, triples)}>
-            <Text style={styles.score}>Check Word</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, {backgroundColor: '#3A9366' }]} onPress={()=>handleWordSubmit(word, doubles, triples)}>
-            <Text style={styles.score}>Submit Word</Text>
-            </TouchableOpacity>
-            </View>
-            <TextInput style={styles.textInput} value={word} onChangeText={setWord} placeholder='Enter your word' placeholderTextColor='white'/>
-            <TextInput style={styles.textInput} value={doubles} onChangeText={setDoubles} placeholder='Enter any double letters' placeholderTextColor='white'/>
-            <TextInput style={styles.textInput} value={triples} onChangeText={setTriples} placeholder='Enter any triple letters' placeholderTextColor='white'/>
         </SafeAreaView>
     )
 }
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         borderColor: '#DBB684',
         padding: 5,
         borderRadius: 5,
-        marginBottom: 5,
+        marginBottom: 4,
     },
     wordButtonsContainer: {
         flexDirection: 'row',
@@ -180,14 +180,22 @@ const styles = StyleSheet.create({
         margin: 2,
     },
     score: {
-        color: 'white'
+        color: 'white',
+        textAlign: 'center',
     },
     bonusesContainer:{
-        marginVertical: 5
+        marginVertical: 4
+    },
+    bonusesHeader: {
+        width: 96,
+        color: 'white',
+        marginBottom: 0.5,
+        borderBottomWidth: 1,
+        borderBottomColor: 'white'
     },
     bonuses: {
         color: 'white',
-        marginBottom: 1,
+        marginBottom: 0.5,
     },
     wordModesList: {
     height: 250,
@@ -199,7 +207,11 @@ const styles = StyleSheet.create({
     },
     modesButtonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginVertical: 4,
+    },
+    buttonText: {
+        color: 'white'
     }
 })
 

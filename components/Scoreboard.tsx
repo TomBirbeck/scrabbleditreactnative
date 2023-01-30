@@ -290,6 +290,8 @@ const styles = StyleSheet.create({
         topButtonContainer: {
             flexDirection: 'row',
             justifyContent: 'space-between',
+            marginHorizontal: 6,
+            marginVertical: 4,
         }
 
 })

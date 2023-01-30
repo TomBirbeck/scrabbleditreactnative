@@ -88,6 +88,8 @@ const Display = () => {
 const styles = StyleSheet.create({
     displayWord :{
         height: 50,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     turnText: {
         color: 'white',
