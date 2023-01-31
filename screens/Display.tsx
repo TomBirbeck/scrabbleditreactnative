@@ -118,15 +118,13 @@ const styles = StyleSheet.create({
   },
   aboutButton: {
 alignSelf: 'flex-end',
-borderWidth: 1,
-backgroundColor: '#3A9366',
 paddingVertical: 2,
 paddingHorizontal: 5,
-borderRadius: 5
   },
   aboutText: {
     textAlign:'center',
-    color: 'white'
+    color: 'white',
+    fontSize: 16
   },
     displayWord :{
         height: 50,
