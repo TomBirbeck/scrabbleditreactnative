@@ -25,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo512.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.tomb47.Scrabbledit"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2467f49e-dc30-4f64-b037-1c04ce5b3769"
+      }
     }
   }
 }

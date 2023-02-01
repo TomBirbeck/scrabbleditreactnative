@@ -201,7 +201,7 @@ const Scoreboard = ({player1, player2, player3, player4, setPlayer1, setPlayer2,
     </View>
         <FlatList
         data={players}
-        keyExtractor={(player) => player.name}
+        keyExtractor={(player) => String(player.id)}
         renderItem={(player)=>(
             <View style={styles.tableBody}>
                 <TouchableOpacity onPress={() => {setPlayerTurn(player.item)}}>

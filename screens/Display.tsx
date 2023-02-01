@@ -57,7 +57,8 @@ const Display = ({navigation}: any) => {
             <FlatList
             horizontal={true}
             data={word[0]}
-            keyExtractor={item=>item}
+            key={Math.round(Math.random()*1000)}
+            // keyExtractor={item=>item}
             renderItem={({item})=>(<DisplayWord letter={item}/>)}
             />
               }

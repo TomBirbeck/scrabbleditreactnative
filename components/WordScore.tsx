@@ -68,6 +68,9 @@ const WordScore = ({setPassScore, finalScoreMode, finalTiles, setFinalTiles}: Sc
   },[word, doubles, triples, doubleScore, doubleDoubleScore, tripleScore, doubleTripleScore, tripleTripleScore, allTiles])
 
   const handleWordSubmit = (word: string, doubles: string, triples: string) => {
+    if (word.length === 0){
+        Alert.alert('Please enter at least 1 letter or an underscore ( _ ) for a blank tile')
+    } else {
         const wordSplit = word.trim().toUpperCase().split('')
         const doublesSplit = doubles.trim().toUpperCase().split('')
         const triplesSplit = triples.trim().toUpperCase().split('')
@@ -104,6 +107,7 @@ const WordScore = ({setPassScore, finalScoreMode, finalTiles, setFinalTiles}: Sc
     setDoubleTripleScore(false);
     setTripleTripleScore(false);
     setAllTiles(false);
+}
   }
 
     return (
